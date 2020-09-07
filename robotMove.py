@@ -14,7 +14,7 @@ import time
 vel = np.array
 
 N = 1
-initial_conditions = np.array(np.mat('-0.5;0.05;0'))
+initial_conditions = np.array(np.mat('-0.5;-0.7;0'))
 
 r = robotarium.Robotarium(number_of_robots=N, show_figure=True, initial_conditions=initial_conditions,sim_in_real_time=True)
 
@@ -27,6 +27,8 @@ corse = [[],[]]
 
 arrX = []
 arrY = []
+
+running = True
 
 # Functions to help the code look better
 def setVelocity(linear: float, angular: float):
@@ -120,11 +122,22 @@ def calcAngle(rob, x2, y2):
     c = x2
     d = y2
 
+    if d < 0:
+        d += (2*math.pi)
+
     theta = math.atan((d-b)/(c-a))
+
+    theta2 = math.atan(d/c)
 
     fhi = P - theta
 
-    return -fhi
+    #quadrant = 1 if theta2 < 0 else -1 
+
+    quadrant = -1
+
+    turn = (1.0000005 / fhi)
+
+    return quadrant * turn
 
 
 def atGoal(rob, xG, yG):
@@ -132,7 +145,7 @@ def atGoal(rob, xG, yG):
 
     return math.sqrt(math.pow(xG - rob[0], 2) + math.pow(yG - rob[1], 2))
 
-plotCorse(0.4, 0.4, 1, 20, 1)
+plotCorse(0.4, 0.4, 1, 11, 1)
 
 x = r.get_poses()
 
@@ -140,37 +153,26 @@ r.step()
 
 setVelocity(0, 0)
 
-countMax = 10000
+#countMax = 700
 
-count = 0
+#count = 0
 
 # Test printing
 
-def debugPrint(t):
-    print("-----")
-
-    #print(corse)
-
-    print("-----")
-
-while ((count < countMax)):
+while running:
     x = r.get_poses()
 
-
     if atGoal(x, corse[0][goal], corse[1][goal]) < 0.1:
-         goal += 1
+        goal += 1
+        print("Next goal: X", corse[0][goal],"Y", corse[1][goal])
+        print("Angle", calcAngle(x, corse[0][goal], corse[1][goal]))
 
-    setVelocity(0.1,calcAngle(x, corse[0][goal], corse[1][goal]))
+    setVelocity(0.3, calcAngle(x, corse[0][goal], corse[1][goal]))
 
-    if count == 0:
-        debugPrint(x)
-
-    print(calcAngle(x, corse[0][goal], corse[1][goal]))
+    #setVelocity(0, 0.5)
 
     r.step()
 
-    count += 1
+    #count += 1
 
 r.call_at_scripts_end()
-
-
