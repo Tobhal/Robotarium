@@ -4,6 +4,7 @@ from rps.utilities.barrier_certificates import *
 from rps.utilities.misc import *
 from rps.utilities.controllers import *
 
+import math
 import numpy as np
 import time
 
@@ -13,12 +14,14 @@ import time
 vel = np.array
 
 N = 1
-initial_conditions = np.array(np.mat('0.05;0.05;0'))
+initial_conditions = np.array(np.mat('-0.5;0.05;0'))
 
 r = robotarium.Robotarium(number_of_robots=N, show_figure=True, initial_conditions=initial_conditions,sim_in_real_time=True)
 
 unicycle_pose_controller = create_hybrid_unicycle_pose_controller()
 uni_barrier_cert = create_unicycle_barrier_certificate()
+
+goal = 1
 
 corse = [[],[]]
 
@@ -109,9 +112,25 @@ def closesPoint(t):
 
     return mini
 
+def calcAngle(rob, x2, y2):
+    a = rob[0]
+    b = rob[1]
+    P = rob[2]
 
-    
-    
+    c = x2
+    d = y2
+
+    theta = math.atan((d-b)/(c-a))
+
+    fhi = P - theta
+
+    return -fhi
+
+
+def atGoal(rob, xG, yG):
+    global goal
+
+    return math.sqrt(math.pow(xG - rob[0], 2) + math.pow(yG - rob[1], 2))
 
 plotCorse(0.4, 0.4, 1, 20, 1)
 
@@ -121,7 +140,7 @@ r.step()
 
 setVelocity(0, 0)
 
-countMax = 200
+countMax = 10000
 
 count = 0
 
@@ -137,12 +156,16 @@ def debugPrint(t):
 while ((count < countMax)):
     x = r.get_poses()
 
-    setVelocity(0.3,0)
+
+    if atGoal(x, corse[0][goal], corse[1][goal]) < 0.1:
+         goal += 1
+
+    setVelocity(0.1,calcAngle(x, corse[0][goal], corse[1][goal]))
 
     if count == 0:
         debugPrint(x)
 
-    print(closesPoint(x))
+    print(calcAngle(x, corse[0][goal], corse[1][goal]))
 
     r.step()
 
