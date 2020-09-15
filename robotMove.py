@@ -8,8 +8,6 @@ import math
 import numpy as np
 import time
 
-
-
 # initialization
 vel = np.array
 
@@ -110,7 +108,7 @@ def closesPoint(t):
     arrX.append(corse[0][mini] - 0.001)
     arrY.append(corse[1][mini] - 0.001)
 
-    r.axes.plot(arrX, arrY, color = 'blue', lineWidth = 1)
+    r.axes.plot(arrX, arrY, color = 'blue', lineWidth = 8)
 
     return mini
 
@@ -122,22 +120,26 @@ def calcAngle(rob, x2, y2):
     c = x2
     d = y2
 
-    if d < 0:
-        d += (2*math.pi)
+    #if d < 0:
+    #    d += (2*math.pi)
 
-    theta = math.atan( (d-b)/(c-a) )
+    theta = math.atan2( (d-b),(c-a) )
 
-    theta2 = math.atan(d/c)
+    theta2 = math.atan2(d,c)
 
     fhi = P - theta
+    #print("robot pos",a , b)
+    #print("desired",c , d)
+    #print("phi = P - theta",fhi)
+    #print("Heading P",P)
+    #print("Angle towards destination, theta",theta)
 
-    quadrant = 1 if theta2 < 0 else -1 
+    quadrant = 1 if np.cos(theta2) < 0 else -1 
 
     #quadrant = -1
 
-    turn = (1.0000005 / fhi)
-
-    return quadrant * turn
+    turn = 3.0000005 * np.sin( fhi) 
+    return -1*turn#quadrant * turn
 
 
 def atGoal(rob, xG, yG):
@@ -145,7 +147,8 @@ def atGoal(rob, xG, yG):
 
     return math.sqrt(math.pow(xG - rob[0], 2) + math.pow(yG - rob[1], 2))
 
-plotCorse(0.4, 0.4, 1, 11, 1)
+numPointsOneSide = 11
+plotCorse(0.4, 0.4, 1, numPointsOneSide, 1)
 
 x = r.get_poses()
 
@@ -155,15 +158,19 @@ setVelocity(0, 0)
 
 #countMax = 700
 
-#count = 0
+print(len(corse[0]))
+count = 0
 
 # Test printing
 
-while running:
+while count < 2000:
+    count = count + 1
     x = r.get_poses()
 
     if atGoal(x, corse[0][goal], corse[1][goal]) < 0.1:
         goal += 1
+        if goal >= len(corse[0]):
+            goal = 0
         print("Next goal", goal, ": X", corse[0][goal],"Y", corse[1][goal])
         print("Angle", calcAngle(x, corse[0][goal], corse[1][goal]))
         print("This Val:", x[0], x[1], x[2])
