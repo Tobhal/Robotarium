@@ -125,15 +125,15 @@ def calcAngle(rob, x2, y2):
     if d < 0:
         d += (2*math.pi)
 
-    theta = math.atan((d-b)/(c-a))
+    theta = math.atan( (d-b)/(c-a) )
 
     theta2 = math.atan(d/c)
 
     fhi = P - theta
 
-    #quadrant = 1 if theta2 < 0 else -1 
+    quadrant = 1 if theta2 < 0 else -1 
 
-    quadrant = -1
+    #quadrant = -1
 
     turn = (1.0000005 / fhi)
 
@@ -164,10 +164,13 @@ while running:
 
     if atGoal(x, corse[0][goal], corse[1][goal]) < 0.1:
         goal += 1
-        print("Next goal: X", corse[0][goal],"Y", corse[1][goal])
+        print("Next goal", goal, ": X", corse[0][goal],"Y", corse[1][goal])
         print("Angle", calcAngle(x, corse[0][goal], corse[1][goal]))
+        print("This Val:", x[0], x[1], x[2])
+        print()
+        print()
 
-    setVelocity(0.3, calcAngle(x, corse[0][goal], corse[1][goal]))
+    setVelocity(0.2, calcAngle(x, corse[0][goal], corse[1][goal]))
 
     #setVelocity(0, 0.5)
 
