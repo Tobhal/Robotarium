@@ -50,6 +50,9 @@ def plotCorse(angle, length, offset, steps, roadWidth):
         xVec.append(offset + (angle * np.sin(i)))
         yVec.append(angle * np.cos(i))
 
+    xVec.append(offset)
+    yVec.append(-(np.sin(angle)))
+
     xVec.append(length)
     yVec.append(-(np.sin(angle)))
 
@@ -64,6 +67,9 @@ def plotCorse(angle, length, offset, steps, roadWidth):
     for i in circle:
         xVec.append(-(offset + (angle * np.sin(i))))
         yVec.append((angle * np.cos(i)))
+
+    xVec.append(-offset)
+    yVec.append(-(np.sin(angle)))
 
     xVec.append(-length)
     yVec.append(-(np.sin(angle)))
