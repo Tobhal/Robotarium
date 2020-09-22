@@ -24,11 +24,14 @@ goal = 0
 corse = [[],[]]
 
 # Functions to help the code look better
-def setVelocity(linear: float, angular: float):
-    vel = np.array([linear, angular])
+def setVelocity(linear, angular):
+    linearSpeed = float(linear)
+    angularSpeed = float(angular)
+    
+    vel = np.array([linearSpeed, angularSpeed])
     vel.shape = (2,1)
 
-    r.set_velocities(np.arange(N), vel)
+    return vel
 
 def plotCorse(angle, length, offset, steps, roadWidth):
     global corse
@@ -130,8 +133,9 @@ while count < 1:
         print()
         print()
 
-    setVelocity(calcSpeed(x, corse[0][goal], corse[1][goal]), calcAngle(x, corse[0][goal], corse[1][goal]))
+    vel = setVelocity(calcSpeed(x, corse[0][goal], corse[1][goal]), calcAngle(x, corse[0][goal], corse[1][goal]))
 
+    r.set_velocities(N, vel)
     r.step()
 
 r.call_at_scripts_end()
