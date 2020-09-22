@@ -95,6 +95,7 @@ def calcAngle(rob, x2, y2):
 
     turn = 3 * np.sin(fhi) 
     return -1*turn
+    #return 0.5
 
 def calcSpeed(rob, x2, y2):
     x1 = rob[0]
@@ -106,6 +107,7 @@ def calcSpeed(rob, x2, y2):
     speed = 5 * length if length > 0.2 else 0.2
 
     return speed
+    #return 0.5
 
 def atGoal(rob, xG, yG):
     global goal
@@ -114,11 +116,19 @@ def atGoal(rob, xG, yG):
 
 #Robot driving
 numPointsOneSide = 11
-plotCorse(0.2, 0.2, 1, numPointsOneSide, 1)
+plotCorse(0.4, 0.4, 1, numPointsOneSide, 1)
 
 count = 0
 
-while count < 1:
+x = r.get_poses()
+
+vel = setVelocity(calcSpeed(x, corse[0][goal], corse[1][goal]), calcAngle(x, corse[0][goal], corse[1][goal]))
+
+r.set_velocities(N, vel)
+
+r.step()
+
+for i in range(1000):
     x = r.get_poses()
 
     if atGoal(x, corse[0][goal], corse[1][goal]) < 0.1:
