@@ -17,12 +17,12 @@
     }
 
     \section{Task undertaken}
-    This task was about making a robot (in a simulation and in real life) move along a ploted corse. The corse was going to be like a infinity symbol. I decided to write my own motion algorithm and write a function to draw the corse from a few variables. 
+        This task was about making a robot (in a simulation and in real life) move along a plotted course. The course was going to be like a infinity symbol. I decided to write my own motion algorithm and write a function to draw the course from a few variables. 
 
     \section{Motion planning algorithm}
     
     \paragraph{Calculate the angle}
-        To make the robot follow the given corse, i created the motion algorithm my self. I set out to create a "simple" way of finding the angle difrence from the robot to the next point of the corse. I get the angle by using this function in python:
+        To make the robot follow the given course, I created the motion algorithm myself. I set out to create a "simple" way of finding the angle difference from the robot to the next point of the course. I get the angle by using this function in python:
 
         \begin{pythoncode}
     def calcAngle(rob, x2, y2):
@@ -33,10 +33,10 @@
         \end{pythoncode}
 
         
-        Afther i have calculated the angle I then calculate a extra turning speed. This means that if the next point is straight forward the robot will do small corrections, and bigger corrections if the angle is large.
+        After I have calculated the angle, I then calculate an extra turning speed. This means that if the next point is straight forward the robot will do small corrections, and bigger corrections if the angle is large.
 
     \paragraph{Calculate the speed}
-        I also have a function to calculate the speed of the robot. This function is designed to increas the speed of the robot when the next point is far way and reduse the speed when the point gets close.
+        I also have a function to calculate the speed of the robot. This function is designed to increase the speed of the robot when the next point is far way and reduce the speed when the point gets close.
 
         \begin{pythoncode}
     def calcSpeed(rob, x2, y2):
@@ -46,19 +46,19 @@
         return 5 * length if length > 0.2 else 0.2
         \end{pythoncode}
 
-        This function is not perfect, the the robot will contantly change speed and it is no max speed defined. The function works fine in the simulation because of the short distances I am working with.
+        This function is not perfect, the robot will constantly change speed and it is no max speed defined. The function works fine in the simulation because of the short distances I am working with.
 
     \section{Results simulation}
-        Running the simulation the robot works as intended. When the angle between the robot and the goal is large, the robot turns fast, then slows down. When the robot arives at the goal the robot drives to the next goal. 
+        Running the simulation, the robot works as intended. When the angle between the robot and the goal is large, the robot turns fast, then slows down. When the robot arrives at the goal the robot drives to the next goal. 
         
-        I did have some problems with my code before, i was talking with a friend and i implemented some code he used with out thinking about if that code was going to work for me. This resulted in some time trubleshooting the code, but in the end my algorytm worked fine.
+        I did have some problems with my code before, I was talking with a friend and I implemented some code he used without thinking about if that code was going to work for me. This resulted in some time troubleshooting the code, but in the end my algorithm worked fine.
 
     \section{Results at Robotarium}
-        At first i had a while loop that looped to a count, i incremented the count when i hit the first goal. This way seemt not to work. I then changes the loop to a for loop and the robot started to move.
+        At first, I had a while loop that looped to a count, I incremented the count when I hit the first goal. This way seems not to work. I then change the loop to a for loop and the robot started to move.
 
-        The robot is defently not running perfect, it is overcorrecting some, and not always in the middle of the track, this is probaly some of my code not beeing the totaly best, and the robot not having the most acurate sensors. In general the robot is doing what i have told it to do.
+        The robot is definitely not running perfect, it is overcorrecting some, and not always in the middle of the track, this is probably some of my code not being the totally best, and the robot not having the most accurate sensors. In general, the robot is doing what I have told it to do.
 
-        When we are going to work on a robot we have then I think it is smart to test more and fine tune the variables, or try to implement a more advansed algorithm.
+        When we are going to work on a robot, we have then I think it is smart to test more and fine tune the variables or try to implement a more advanced algorithm.
 
 
 \end{document}
