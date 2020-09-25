@@ -95,6 +95,7 @@ def calcAngle(rob, x2, y2):
 
     turn = 3 * np.sin(fhi) 
     return -1*turn
+    #return 0.5
 
 def calcSpeed(rob, x2, y2):
     x1 = rob[0]
@@ -106,6 +107,7 @@ def calcSpeed(rob, x2, y2):
     speed = 5 * length if length > 0.2 else 0.2
 
     return speed
+    #return 0.5
 
 def atGoal(rob, xG, yG):
     global goal
@@ -126,7 +128,11 @@ r.set_velocities(N, vel)
 
 r.step()
 
+<<<<<<< HEAD
 for i in range(3000):
+=======
+for i in range(1000):
+>>>>>>> 446c977eef8f0b9e680c2a7fe8b6652317b4d12a
     x = r.get_poses()
 
     if atGoal(x, corse[0][goal], corse[1][goal]) < 0.1:
