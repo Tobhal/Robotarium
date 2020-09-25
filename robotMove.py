@@ -24,11 +24,14 @@ goal = 0
 corse = [[],[]]
 
 # Functions to help the code look better
-def setVelocity(linear: float, angular: float):
-    vel = np.array([linear, angular])
+def setVelocity(linear, angular):
+    linearSpeed = float(linear)
+    angularSpeed = float(angular)
+    
+    vel = np.array([linearSpeed, angularSpeed])
     vel.shape = (2,1)
 
-    r.set_velocities(np.arange(N), vel)
+    return vel
 
 def plotCorse(angle, length, offset, steps, roadWidth):
     global corse
@@ -111,11 +114,19 @@ def atGoal(rob, xG, yG):
 
 #Robot driving
 numPointsOneSide = 11
-plotCorse(0.2, 0.2, 1, numPointsOneSide, 1)
+plotCorse(0.4, 0.4, 1, numPointsOneSide, 1)
 
 count = 0
 
-while count < 1:
+x = r.get_poses()
+
+vel = setVelocity(calcSpeed(x, corse[0][goal], corse[1][goal]), calcAngle(x, corse[0][goal], corse[1][goal]))
+
+r.set_velocities(N, vel)
+
+r.step()
+
+for i in range(3000):
     x = r.get_poses()
 
     if atGoal(x, corse[0][goal], corse[1][goal]) < 0.1:
@@ -130,8 +141,9 @@ while count < 1:
         print()
         print()
 
-    setVelocity(calcSpeed(x, corse[0][goal], corse[1][goal]), calcAngle(x, corse[0][goal], corse[1][goal]))
+    vel = setVelocity(calcSpeed(x, corse[0][goal], corse[1][goal]), calcAngle(x, corse[0][goal], corse[1][goal]))
 
+    r.set_velocities(N, vel)
     r.step()
 
 r.call_at_scripts_end()
